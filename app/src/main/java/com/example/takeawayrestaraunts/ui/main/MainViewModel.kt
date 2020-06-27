@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.example.takeawayrestaraunts.networking.models.restaurant.Restaurant
 import com.example.takeawayrestaraunts.repository.RestaurantsRepo
@@ -31,7 +32,7 @@ class MainViewModelImpl(private val restaurantsRepo: RestaurantsRepo) : MainView
             error.value = throwable.localizedMessage
         }.asLiveData()
 
-    override val isLoading: LiveData<Boolean> = MutableLiveData<Boolean>()
+    override val isLoading: LiveData<Boolean> = restaurants.map { it.isEmpty() }
 
     override val isSwipeRefreshVisible: MutableLiveData<Boolean> = MutableLiveData()
 
