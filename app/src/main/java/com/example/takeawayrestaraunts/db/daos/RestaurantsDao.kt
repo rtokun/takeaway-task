@@ -1,6 +1,7 @@
 package com.example.takeawayrestaraunts.db.daos
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -26,4 +27,7 @@ interface RestaurantsDao {
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(restaurant: Restaurant)
+
+    @Query("DELETE FROM $RESTAURANTS_TABLE")
+    suspend fun clear()
 }

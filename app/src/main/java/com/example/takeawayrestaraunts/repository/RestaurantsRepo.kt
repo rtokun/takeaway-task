@@ -16,6 +16,8 @@ interface RestaurantsRepo {
         isFavorite: Boolean,
         restaurantId: Int
     )
+
+    suspend fun clearCache()
 }
 
 class RestaurantsRepoImpl(
@@ -42,5 +44,9 @@ class RestaurantsRepoImpl(
             val updated = it.copy(isFavorite = isFavorite)
             db.update(updated)
         }
+    }
+
+    override suspend fun clearCache() {
+        db.clear()
     }
 }

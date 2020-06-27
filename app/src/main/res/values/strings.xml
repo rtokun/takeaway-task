@@ -5,4 +5,11 @@
     <string name="restaurant_closed">Closed now</string>
     <string name="restaurant_cover_image_content_description">Restaurant cover image</string>
     <string name="settings_menu_title">Settings</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="mock_api_header">Mocking</string>
+    <string name="use_mock_api_title">Use mock APIs</string>
+    <string name="preference_key_use_mock_api">use_mock_api</string>
 </resources>
