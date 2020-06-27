@@ -63,6 +63,7 @@ class RestaurantViewHolder(
         isFavorite: Boolean,
         onCheckedChangeListener: CompoundButton.OnCheckedChangeListener
     ) {
+        checkBox.setOnCheckedChangeListener(null)
         checkBox.isChecked = isFavorite
         checkBox.setOnCheckedChangeListener(onCheckedChangeListener)
     }

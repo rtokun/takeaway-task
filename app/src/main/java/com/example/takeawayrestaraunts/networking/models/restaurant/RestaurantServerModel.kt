@@ -1,5 +1,8 @@
 package com.example.takeawayrestaraunts.networking.models.restaurant
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.example.takeawayrestaraunts.db.DBConstants.RESTAURANTS_TABLE
 import com.google.gson.annotations.SerializedName
 
 data class RestaurantServerModel(
@@ -15,9 +18,11 @@ data class RestaurantServerModel(
     val isOpen: Boolean
 )
 
+@Entity(tableName = RESTAURANTS_TABLE)
 data class Restaurant(
-    val coverImageUrl: String,
+    @PrimaryKey
     val id: Int,
+    val coverImageUrl: String,
     val minimumOrder: Int,
     val name: String,
     val isOpen: Boolean,

@@ -1,6 +1,7 @@
 package com.example.takeawayrestaraunts.di
 
 import com.example.takeawayrestaraunts.di.modules.adaptersModule
+import com.example.takeawayrestaraunts.di.modules.dbModule
 import com.example.takeawayrestaraunts.di.modules.networkingModule
 import com.example.takeawayrestaraunts.di.modules.repositoriesModule
 import com.example.takeawayrestaraunts.di.modules.utilsModule
@@ -11,5 +12,6 @@ val modules = listOf(
     viewModelsModule,
     repositoriesModule,
     adaptersModule,
-    utilsModule
+    utilsModule,
+    dbModule
 )

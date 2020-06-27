@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.takeawayrestaraunts.R
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -44,6 +45,11 @@ class MainFragment : Fragment() {
                     updateIsLoading(it)
                 }
             })
+            isSwipeRefreshVisible.observe(viewLifecycleOwner, Observer {
+                it?.let {
+                    swipeRefreshContainer.isRefreshing = it
+                }
+            })
             error.observe(viewLifecycleOwner, Observer {
                 it?.let {
                     Snackbar.make(rootContainer, it, BaseTransientBottomBar.LENGTH_LONG)
@@ -59,7 +65,16 @@ class MainFragment : Fragment() {
     }
 
     private fun initViews() {
-        restaurantsList.adapter = adapter
+        restaurantsList.apply {
+            adapter = this@MainFragment.adapter
+
+            /* Prevents the blinking effect on onItemChanged event */
+            (itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
+        }
+
+        swipeRefreshContainer.setOnRefreshListener {
+            viewModel.onSwipeRefreshCalled()
+        }
     }
 
     private fun updateIsLoading(isLoading: Boolean) {

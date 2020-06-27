@@ -8,7 +8,8 @@ val repositoriesModule = module {
 
     single<RestaurantsRepo> {
         RestaurantsRepoImpl(
-            restaurantsService = get()
+            restaurantsService = get(),
+            db = get()
         )
     }
 
