@@ -10,7 +10,7 @@ import org.koin.dsl.module
 val dbModule = module {
 
     single<TakeAwayDb> {
-        TakeAwayDb.create(androidContext(), true)
+        TakeAwayDb.create(androidContext(), false)
     }
 
     factory<RestaurantsDao> {

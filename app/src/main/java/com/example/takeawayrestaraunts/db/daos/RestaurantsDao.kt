@@ -15,7 +15,10 @@ interface RestaurantsDao {
     @Query("SELECT * FROM $RESTAURANTS_TABLE")
     fun getAllRestaurants(): Flow<List<Restaurant>>
 
-    @Insert
+    @Query("SELECT COUNT(*) FROM $RESTAURANTS_TABLE")
+    suspend fun getRestaurantsCount(): Int
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertRestaurants(restaurants: List<Restaurant>)
 
     @Query("SELECT * from $RESTAURANTS_TABLE WHERE id=:restaurantId")

@@ -4,24 +4,18 @@ import com.example.takeawayrestaraunts.db.daos.RestaurantsDao
 import com.example.takeawayrestaraunts.networking.models.restaurant.Restaurant
 import com.example.takeawayrestaraunts.networking.models.restaurant.toAppModel
 import com.example.takeawayrestaraunts.networking.services.RestaurantsService
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.launch
 
 interface RestaurantsRepo {
 
-    fun getRestaurants(): Flow<List<Restaurant>>
+    val restaurants: Flow<List<Restaurant>>
+
+    suspend fun getRestaurants(forceRefresh: Boolean)
 
     suspend fun setFavorite(
         isFavorite: Boolean,
         restaurantId: Int
     )
-
-
 }
 
 class RestaurantsRepoImpl(
@@ -29,23 +23,19 @@ class RestaurantsRepoImpl(
     private val db: RestaurantsDao
 ) : RestaurantsRepo {
 
-    override fun getRestaurants() = flow {
+    override val restaurants = db.getAllRestaurants()
 
-        coroutineScope {
-            launch {
-                val fromServer = restaurantsService.getRestaurants()
-                    .restaurantServerModels
+    override suspend fun getRestaurants(forceRefresh: Boolean) {
 
-                db.insertRestaurants(fromServer
-                    .map {
-                        it.toAppModel(false)
-                    })
-            }
+        if (!forceRefresh && db.getRestaurantsCount() > 0) {
+            // we have cached data, just use it
+            return
         }
 
-        emitAll(db.getAllRestaurants())
-
-    }.flowOn(IO)
+        val fromServer = restaurantsService.getRestaurants().restaurantServerModels
+            .map { it.toAppModel(false) }
+        db.insertRestaurants(fromServer)
+    }
 
     override suspend fun setFavorite(isFavorite: Boolean, restaurantId: Int) {
         db.getRestaurantById(restaurantId)?.let {

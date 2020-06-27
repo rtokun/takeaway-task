@@ -9,6 +9,7 @@ import com.example.takeawayrestaraunts.networking.models.restaurant.Restaurant
 import com.example.takeawayrestaraunts.repository.RestaurantsRepo
 import com.example.takeawayrestaraunts.utils.SingleLiveEvent
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 interface MainViewModel : RestaurantsAdapter.InteractionInterface {
@@ -23,18 +24,33 @@ interface MainViewModel : RestaurantsAdapter.InteractionInterface {
 
 class MainViewModelImpl(private val restaurantsRepo: RestaurantsRepo) : MainViewModel, ViewModel() {
 
-    override val restaurants: LiveData<List<Restaurant>> = restaurantsRepo
-        .getRestaurants()
-        .asLiveData()
-
     override val error: MutableLiveData<String> = SingleLiveEvent()
+
+    override val restaurants: LiveData<List<Restaurant>> = restaurantsRepo.restaurants
+        .catch { throwable ->
+            error.value = throwable.localizedMessage
+        }.asLiveData()
 
     override val isLoading: LiveData<Boolean> = MutableLiveData<Boolean>()
 
-    override val isSwipeRefreshVisible: LiveData<Boolean> = MutableLiveData()
+    override val isSwipeRefreshVisible: MutableLiveData<Boolean> = MutableLiveData()
+
+    init {
+        viewModelScope.launch(CoroutineExceptionHandler { _, throwable ->
+            error.value = throwable.message
+        }) {
+            restaurantsRepo.getRestaurants(false)
+        }
+    }
 
     override fun onSwipeRefreshCalled() {
-
+        viewModelScope.launch(CoroutineExceptionHandler { _, throwable ->
+            error.value = throwable.message
+            isSwipeRefreshVisible.value = false
+        }) {
+            restaurantsRepo.getRestaurants(true)
+            isSwipeRefreshVisible.value = false
+        }
     }
 
     override fun onFavoriteChange(restaurantId: Int, isFavorite: Boolean) {
