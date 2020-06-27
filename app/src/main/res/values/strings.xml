@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">TakeAway Restaraunts</string>
+    <string name="app_name">TakeAway Restaurants</string>
+    <string name="min_order_placeholder">Minimum order: %d NIS</string>
+    <string name="restaurant_open">Open now</string>
+    <string name="restaurant_closed">Closed now</string>
+    <string name="restaurant_cover_image_content_description">Restaurant cover image</string>
 </resources>
