@@ -5,7 +5,8 @@
     <string name="restaurant_closed">Closed now</string>
     <string name="restaurant_cover_image_content_description">Restaurant cover image</string>
     <string name="settings_menu_title">Settings</string>
-    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_main_activity">Restaurants</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>

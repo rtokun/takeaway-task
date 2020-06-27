@@ -14,8 +14,10 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.settings.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
-        <activity android:name=".ui.main.MainActivity">
+            android:label="@string/title_activity_settings" />
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:label="@string/title_main_activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

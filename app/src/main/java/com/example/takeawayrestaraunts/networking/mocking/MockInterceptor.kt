@@ -25,7 +25,7 @@ class MockInterceptor(
     private fun getMockResponse(chain: Interceptor.Chain): Response {
         val uri = chain.request().url().uri().toString()
         val responseString = when {
-            uri.endsWith("gilgoldzweig/SampleTest/db") -> appContext.loadJSONFromAssets("mocked_restaraunts.json")
+            uri.endsWith("gilgoldzweig/SampleTest/db") -> appContext.loadJSONFromAssets("mocked_restaurants.json")
             else -> ""
         }
 
